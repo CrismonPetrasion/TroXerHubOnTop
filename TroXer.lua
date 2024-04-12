@@ -1,5 +1,4 @@
 if game.PlaceId == 6403373529 then 
-    
     local bypass;
 
     bypass = hookmetamethod(game, "__namecall", function(method, ...) 
@@ -14,194 +13,158 @@ if game.PlaceId == 6403373529 then
         return bypass(method, ...)
     end)
 
-    local Library = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-    local Window = Library:CreateWindow({
-       Name = "Slap Battles | TroXer Hub",
-       LoadingTitle = "Troxer Hub is Loading",
-       LoadingSubtitle = "by Cheese",
-       ConfigurationSaving = {
-          Enabled = true,
-          FolderName = nil, -- Create a custom folder for your hub/game
-          FileName = "Big Hub"
-       },
-       Discord = {
-          Enabled = false,
-          Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
-          RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-       },
-       KeySystem = false, -- Set this to true to use our key system
-       KeySettings = {
-          Title = "Key System",
-          Subtitle = "Key System",
-          Note = "",
-          FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-          SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-          GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-          Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
-       }
+    local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+    local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+    local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+    
+    local Window = Fluent:CreateWindow({
+        Title = "Slap Battles | Troxer Hub",
+        SubTitle = "By cheese",
+        TabWidth = 160,
+        Size = UDim2.fromOffset(580, 460),
+        Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
+        Theme = "Dark",
+        MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
     })
     
-    function Notify(Title, Content, Duration)
-       Library:Notify({
+    local Tabs = {
+        Misc = Window:AddTab({ 
+            Title = "Misc", 
+            Icon = "wrench" 
+        }),
+        Badges = Window:AddTab({ 
+            Title = "Badges", 
+            Icon = "award" 
+        }),
+        Player = Window:AddTab({ 
+            Title = "Player", 
+            Icon = "user" 
+        }),
+        Settings = Window:AddTab({ 
+            Title = "Settings", 
+            Icon = "settings" 
+        })
+    }
+    
+    function Notify(Title, Content, SubContent, Duration)
+        Fluent:Notify({
             Title = Title,
             Content = Content,
-            Duration = Duration or 2,
-            Image = 4483362458,
-       })
+            SubContent = SubContent , -- Optional
+            Duration = Duration or 2 -- Set to nil to make the notification not disappear
+        })
     end
     
-    --// Tabs
-
-    local Misc = Window:CreateTab("Misc", 4370318685) -- Title, Image
-    local Badges = Window:CreateTab("Badges", 4483362458) -- Title, Image
-    local Player = Window:CreateTab("Player", 4335489011) -- Title, Image
+    local Options = Fluent.Options
     
-    --// Player Commands
+    do
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    local WalkSpeed = Player:CreateSlider({
-        Name = "Speed Hack",
-        Range = {16, 500},
-        Increment = 1,
-        Suffix = "Walk Speed",
-        CurrentValue = 0,
-        Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-        end,
-    })
-
-    local JumpPower = Player:CreateSlider({
-        Name = "Jump Hack",
-        Range = {50, 500},
-        Increment = 1,
-        Suffix = "Jump Power",
-        CurrentValue = 0,
-        Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
-        end,
-    })
-
-    local GravityPower = Player:CreateSlider({
-        Name = "Gravity Hack",
-        Range = {0, 500},
-        Increment = 1,
-        Suffix = "Gravity Power",
-        CurrentValue = 0,
-        Flag = "Slider3", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            workspace.Gravity = Value
-        end,
-    })
-
-    --// Misc Commands
-
-    local Alchemist = Misc:CreateToggle({
-        Name = "Get Infinite Ingredients",
-        CurrentValue = false,
-        Flag = "Ingredients", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            if Value == true then
-                _G.Alchemist = true
-
-                while _G.Alchemist == true do
-                    wait()
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Blood Rose"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                    ------------------------------------------------------------------------------------------------------
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Jade Stone"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                    ----------------------------------------------------------------------------------------------------
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Plane Flower"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                    ----------------------------------------------------------------------------------------------------
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Lamp Grass"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                    -----------------------------------------------------------------------------------------------------
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Winter Rose"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                    ----------------------------------------------------------------------------------------------------
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Autumn Sprout"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                    ----------------------------------------------------------------------------------------------------
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Dire Flower"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                    ----------------------------------------------------------------------------------------------
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Dark Root"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                    --------------------------------------------------------------------------------------------
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Fire Flower"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                    ---------------------------------------------------------------------------------------------
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Mushroom"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                    --------------------------------------------------------------------------------------------
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Hazel Lily"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                    --------------------------------------------------------------------------------------------
-                    local args = {
-                        [1] = "AddItem",
-                        [2] = "Cake Mix"
-                    }
-                    
-                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
-                end
-            else
-                _G.Alchemist = false
+        Tabs.Player:AddSlider("WalkSpeedChanged", {
+            Title = "Speed Hack",
+            Description = "Changes your's walkspeed",
+            Default = 16,
+            Min = 0,
+            Max = 500,
+            Rounding = 1,
+            Callback = function(Value)
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
             end
-        end,
-    })
+        })
 
-    local AntiVoid = Misc:CreateToggle({
-        Name = "Anti Void",
-        CurrentValue = false,
-        Flag = "Voids", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            if Value == true then
+        Tabs.Player:AddSlider("JumpPowerChanged", {
+            Title = "Jump Power Hack",
+            Description = "Changes your's jump power",
+            Default = 50,
+            Min = 0,
+            Max = 500,
+            Rounding = 1,
+            Callback = function(Value)
+                game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+            end
+        })
+
+        Tabs.Player:AddSlider("GravityChanged", {
+            Title = "Gravity Hack",
+            Description = "Changes your's gravity",
+            Default = 200,
+            Min = 0,
+            Max = 500,
+            Rounding = 1,
+            Callback = function(Value)
+                workspace.Gravity = Value
+            end
+        })
+
+
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            
+        local Portal = Tabs.Misc:AddToggle("Portal", {Title = "Anti Portal", Default = false })
+        local Void = Tabs.Misc:AddToggle("Void", {Title = "Anti Void", Default = false })
+        local Alchemist = Tabs.Misc:AddToggle("Ingridients", {Title = "Get Infinite Ingredients", Default = false })
+        
+        Portal:OnChanged(function()
+            if Options.Portal.Value == true then
+                local block = Instance.new("Part")
+                block.Name = "Anti GS"
+                block.Size = Vector3.new(12.762105941772461, 14.961214065551758, 5.8665102124214172) 
+                block.Transparency = 0.9 
+                block.CanCollide = true 
+                block.Anchored = true
+                block.Position = Vector3.new(-803.081604, 328.906738, -21.2476311, 0, 0, 1, 0, -1, 0, 1, 0, -0) 
+                block.Parent = game.Workspace
+                -----------------------------------------------------------------------------------------------------------
+                local block = Instance.new("Part")
+                block.Name = "Anti KS"
+                block.Size = Vector3.new(12.762105941772461, 14.961214065551758, 5.8665102124214172) 
+                block.Transparency = 0.9 
+                block.CanCollide = true 
+                block.Anchored = true
+                block.Position = Vector3.new(-788.860962, 328.906738, 17.1004639, 0, 0, -1, 0, -1, -0, -1, 0, -0)
+                block.Parent = game.Workspace
+                ---------------------------------------------------------------------------------------------------------------
+                local block = Instance.new("Part")
+                block.Name = "Anti SR"
+                block.Size = Vector3.new(12.762105941772461, 14.961214065551758, 5.8665102124214172) 
+                block.Transparency = 0.9
+                block.CanCollide = true
+                block.Anchored = true 
+                block.Position = Vector3.new(-803.098694, 328.906738, 16.7261944, 0, 0, 1, 0, -1, 0, 1, 0, -0)
+                block.Parent = game.Workspace
+                ------------------------------------------------------------------------------------------------------------
+                local block = Instance.new("Part")
+                block.Name = "Anti DF"
+                block.Size = Vector3.new(5.8665102124214172, 14.961214065551758, 12.762105941772461)
+                block.Transparency = 0.9
+                block.CanCollide = true 
+                block.Anchored = true
+                block.Position = Vector3.new(-810.073608, 329.886566, -8.02650452, 1, 0, 0, 0, -1, 0, 0, 0, -1)
+                block.Parent = game.Workspace
+            else
+                local block = game.Workspace:FindFirstChild("Anti GS")
+                if block then
+                    block:Destroy()
+                end
+                ----------------
+                local block = game.Workspace:FindFirstChild("Anti KS")
+                if block then
+                    block:Destroy()
+                end
+                --------------------------
+                local block = game.Workspace:FindFirstChild("Anti SR")
+                if block then
+                    block:Destroy()
+                end
+                ------------------------------
+                local block = game.Workspace:FindFirstChild("Anti DF")
+                if block then
+                    block:Destroy()
+                end
+            end
+        end)
+    
+        Void:OnChanged(function()
+            if Options.Void.Value == true then
                 local block = Instance.new("Part")
                 block.Name = "AntiVoid"
                 block.Size = Vector3.new(265, 1, 1000) 
@@ -398,157 +361,221 @@ if game.PlaceId == 6403373529 then
                     block:Destroy()
                 end
             end
-        end,
-    })
+        end)
+    
+        Alchemist:OnChanged(function()
+            if Options.Ingridients.Value == true then
+                _G.AlchemistScript = true
+    
+                while _G.AlchemistScript == true do
+                    wait()
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Blood Rose"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                    ------------------------------------------------------------------------------------------------------
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Jade Stone"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                    ----------------------------------------------------------------------------------------------------
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Plane Flower"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                    ----------------------------------------------------------------------------------------------------
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Lamp Grass"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                    -----------------------------------------------------------------------------------------------------
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Winter Rose"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                    ----------------------------------------------------------------------------------------------------
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Autumn Sprout"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                    ----------------------------------------------------------------------------------------------------
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Dire Flower"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                    ----------------------------------------------------------------------------------------------
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Dark Root"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                    --------------------------------------------------------------------------------------------
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Fire Flower"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                    ---------------------------------------------------------------------------------------------
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Mushroom"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                    --------------------------------------------------------------------------------------------
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Hazel Lily"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                    --------------------------------------------------------------------------------------------
+                    local args = {
+                        [1] = "AddItem",
+                        [2] = "Cake Mix"
+                    }
+                    
+                    game:GetService("ReplicatedStorage"):WaitForChild("AlchemistEvent"):FireServer(unpack(args))
+                end
+            else
+                _G.AlchemistScript = false
+            end
+        end)
 
-    local AntiPortal = Misc:CreateToggle({
-        Name = "Anti Portal",
-        CurrentValue = false,
-        Flag = "Portals", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            if Value == true then
-                local block = Instance.new("Part")
-                block.Name = "Anti GS"
-                block.Size = Vector3.new(12.762105941772461, 14.961214065551758, 5.8665102124214172) 
-                block.Transparency = 0.9 
-                block.CanCollide = true 
-                block.Anchored = true
-                block.Position = Vector3.new(-803.081604, 328.906738, -21.2476311, 0, 0, 1, 0, -1, 0, 1, 0, -0) 
-                block.Parent = game.Workspace
-                -----------------------------------------------------------------------------------------------------------
-                local block = Instance.new("Part")
-                block.Name = "Anti KS"
-                block.Size = Vector3.new(12.762105941772461, 14.961214065551758, 5.8665102124214172) 
-                block.Transparency = 0.9 
-                block.CanCollide = true 
-                block.Anchored = true
-                block.Position = Vector3.new(-788.860962, 328.906738, 17.1004639, 0, 0, -1, 0, -1, -0, -1, 0, -0)
-                block.Parent = game.Workspace
-                ---------------------------------------------------------------------------------------------------------------
-                local block = Instance.new("Part")
-                block.Name = "Anti SR"
-                block.Size = Vector3.new(12.762105941772461, 14.961214065551758, 5.8665102124214172) 
-                block.Transparency = 0.9
-                block.CanCollide = true
-                block.Anchored = true 
-                block.Position = Vector3.new(-803.098694, 328.906738, 16.7261944, 0, 0, 1, 0, -1, 0, 1, 0, -0)
-                block.Parent = game.Workspace
-                ------------------------------------------------------------------------------------------------------------
-                local block = Instance.new("Part")
-                block.Name = "Anti DF"
-                block.Size = Vector3.new(5.8665102124214172, 14.961214065551758, 12.762105941772461)
-                block.Transparency = 0.9
-                block.CanCollide = true 
-                block.Anchored = true
-                block.Position = Vector3.new(-810.073608, 329.886566, -8.02650452, 1, 0, 0, 0, -1, 0, 0, 0, -1)
-                block.Parent = game.Workspace
+        local TeleportDrow = Tabs.Main:AddDropdown("TeleportSection", {
+            Title = "Teleport",
+            Values = {"Slapple Island", "Moai Island", "Plate", "Battle Arena", "Cannon Island", "Defualt Arena", "Normal Arena", "Spawn", "Safe Port"},
+            Multi = false,
+            Default = 1,
+        })
+
+        TeleportDrow:OnChanged(function(Value)
+            if Value == "Slapple Island" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Arena.island5.Union.CFrame
+            elseif Value == "Moai Island" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Arena.island4["Big Tree"].Bark.CFrame
+            elseif Value == "Plate" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Arena.Plate.CFrame
+            elseif Value == "Battle Arena" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Battlearena.Arena.CFrame * CFrame.new(0,10,0)
+            elseif Value == "Cannon Island" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(257.620972, 35.9974861, 198.8535, 0.788386106, 0.045268368, -0.613512933, -8.81827944e-09, 0.997288942, 0.0735854656, 0.615180731, -0.0580137558, 0.786248744)
+            elseif Value == "Defualt Arena" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(120,364,-3)
+            elseif Value == "Normal Arena" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-15.3642788, -3.69053721, -7.41954088, 0.405183077, -0.00669269683, -0.914211094, -1.2553046e-05, 0.999973178, -0.00732610561, 0.914235532, 0.00297989813, 0.40517211)
+            elseif Value == "Spawn" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-798.47345, 329.357147, 0.84058404, -0.791819096, -2.52048302e-08, -0.610755682, -2.72838037e-08, 1, -5.89596372e-09, 0.610755682, 1.19952013e-08, -0.791819096)
+            elseif Value == "Safe Port" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-450.217651, -28151.4883, -2.34852624, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+            end
+        end)
+
+        ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        
+        Tabs.Badges:AddButton({
+            Title = "Get Brazil Badge",
+            Description = "Kicks you from the game!",
+            Callback = function()
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.Lobby.brazil.portal.CFrame
+            end,
+        })
+    
+        Tabs.Badges:AddButton({
+            Title = "Get Retro Badge",
+            Description = "Must equip Recall glove to use this command!",
+            Callback = function()
+                if game.Players.LocalPlayer.leaderstats.Glove == "Recall" then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.FinishDoor_Retro.Part.CFrame
+                else
+                    Notify("Error", "You must need recall glove equipped!", "", 3)
+                end
+            end,
+        })
+    
+        Tabs.Badges:AddButton({
+            Title = "Get Duck Badge",
+            Description = "Clicking for you a duck to get the badge!",
+            Callback = function()
+                fireclickdetector(workspace.Arena["default island"]["Rubber Ducky"].ClickDetector)
+            end,
+        })
+    
+        Tabs.Badges:AddButton({
+            Title = "Get Court Evidence Badge",
+            Description = "Clicking for you a knife to get the badge!",
+            Callback = function()
+                fireclickdetector(workspace.Lobby.Scene.knofe.ClickDetector)
+            end,
+        })
+    
+        Tabs.Badges:AddButton({
+            Title = "Get Lone Orange Badge",
+            Description = "Clicking for you a lone orange to get the badge!",
+            Callback = function()
+                fireclickdetector(workspace.Arena.island5.Orange.ClickDetector)
+            end,
+        })
+    
+        Tabs.Badges:AddButton({
+            Title = "Get Ice Skate Badge",
+            Description = "Freeze's you to get the badge!",
+            Callback = function()
+                local args = {
+                    [1] = "Freeze"
+                }
                 
-            else
-                local block = game.Workspace:FindFirstChild("Anti GS")
-                if block then
-                    block:Destroy()
+                game:GetService("ReplicatedStorage").IceSkate:FireServer(unpack(args))
+             end,
+        })
+    
+        Tabs.Badges:AddButton({
+            Title = "Get Trap Badge",
+            Description = "Must equip Brick glove to use this command!",
+            Callback = function()
+                if game.Players.LocalPlayer.leaderstats.Glove.Value == "Brick" then
+                    for i = 1, 200 do
+                        game:GetService("ReplicatedStorage").lbrick:FireServer()
+                        game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text = game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text + 1;
+                        wait(Random.new():NextNumber(1.1,1.25))
+                        game:GetService("ReplicatedStorage").lbrick:FireServer()
+                        game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text = game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text + 1;
+                        wait(Random.new():NextNumber(1.1,1.25))
+                        game:GetService("ReplicatedStorage").lbrick:FireServer()
+                        game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text = game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text + 1;
+                        wait(Random.new():NextNumber(1.1,1.25))
+                        game:GetService("ReplicatedStorage").lbrick:FireServer()
+                        game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text = game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text + 1;
+                        wait(Random.new():NextNumber(1.1,1.25))
+                        game:GetService('VirtualInputManager'):SendKeyEvent(true,'E',false,x)
+                        wait(Random.new():NextNumber(1.1,1.25))
+                    end
+                else
+                    Notify("Error", "You must need brick glove equipped!", "", 3)
                 end
-                ----------------
-                local block = game.Workspace:FindFirstChild("Anti KS")
-                if block then
-                    block:Destroy()
-                end
-                --------------------------
-                local block = game.Workspace:FindFirstChild("Anti SR")
-                if block then
-                    block:Destroy()
-                end
-                ------------------------------
-                local block = game.Workspace:FindFirstChild("Anti DF")
-                if block then
-                    block:Destroy()
-                end
-            end
-        end,
-    })
-
-    --// Badges Commands
-
-    local Brazil = Badges:CreateButton({
-        Name = "Get Brazil Badge",
-        Callback = function()
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.Lobby.brazil.portal.CFrame
-        end,
-    })
-
-    local Retro = Badges:CreateButton({
-        Name = "Get Retro Badge",
-        Callback = function()
-            if game.Players.LocalPlayer.leaderstats.Glove == "Recall" then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.FinishDoor_Retro.Part.CFrame
-            else
-                Notify("Error", "You don't have recall glove equipped!", 3)
-            end
-        end,
-    })
-
-    local Duck = Badges:CreateButton({
-        Name = "Get Duck Badge",
-        Callback = function()
-            fireclickdetector(workspace.Arena["default island"]["Rubber Ducky"].ClickDetector)
-        end,
-    })
-
-    local Knife = Badges:CreateButton({
-        Name = "Get Court Evidence Badge",
-        Callback = function()
-            fireclickdetector(workspace.Lobby.Scene.knofe.ClickDetector)
-        end,
-    })
-
-    local Orange = Badges:CreateButton({
-        Name = "Get Lone Orange Badge",
-        Callback = function()
-            fireclickdetector(workspace.Arena.island5.Orange.ClickDetector)
-        end,
-    })
-
-    local Skate = Badges:CreateButton({
-        Name = "Get Ice Skate Badge",
-        Callback = function()
-            local args = {
-                [1] = "Freeze"
-            }
-            
-            game:GetService("ReplicatedStorage").IceSkate:FireServer(unpack(args))
-         end,
-    })
-
-    local Trap = Badges:CreateButton({
-        Name = "Get Trap Badge",
-        Callback = function()
-            if game.Players.LocalPlayer.leaderstats.Glove.Value == "Brick" then
-                for i = 1, 200 do
-                    game:GetService("ReplicatedStorage").lbrick:FireServer()
-                    game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text = game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text + 1;
-                    wait(Random.new():NextNumber(1.1,1.25))
-                    game:GetService("ReplicatedStorage").lbrick:FireServer()
-                    game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text = game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text + 1;
-                    wait(Random.new():NextNumber(1.1,1.25))
-                    game:GetService("ReplicatedStorage").lbrick:FireServer()
-                    game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text = game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text + 1;
-                    wait(Random.new():NextNumber(1.1,1.25))
-                    game:GetService("ReplicatedStorage").lbrick:FireServer()
-                    game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text = game.Players.LocalPlayer.PlayerGui.BRICKCOUNT.ImageLabel.TextLabel.Text + 1;
-                    wait(Random.new():NextNumber(1.1,1.25))
-                    game:GetService('VirtualInputManager'):SendKeyEvent(true,'E',false,x)
-                    wait(Random.new():NextNumber(1.1,1.25))
-                end
-            else
-                Notify("Error", "You don't have brick equipped")
-            end
-         end,
-    })
-
-    local Redacted = Badges:CreateButton({
-        Name = "Get Redacted Badge",
-        Callback = function()
-            if not game.BadgeService:UserHasBadgeAsync(game.Players.LocalPlayer.UserId, 2124847850) then
+             end,
+        })
+    
+        Tabs.Badges:AddButton({
+            Title = "Get Redacted Badge",
+            Description = "Must have 5000 slaps to use this command!",
+            Callback = function()
                 if game.Players.LocalPlayer.leaderstats.Slaps.Value >= 5000 then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.PocketDimension.Doors["1"].CFrame
                     wait(3.75)
@@ -570,196 +597,37 @@ if game.PlaceId == 6403373529 then
                     wait(3.75)
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.PocketDimension.Doors["9"].CFrame
                 else
-                    Notify("Error", "You don't have 5000 slaps!!", 3)
+                    Notify("Error", "You don't have 5000 slaps", "", 3)
                 end
-            else
-                Notify("Error", "You already have redacted badge!", 3)
-            end
-        end,
-    })
-elseif game.PlaceId == 9431156611 then
-    local bypass;
-    bypass = hookmetamethod(game, "__namecall", function(method, ...) 
-        if getnamecallmethod() == "FireServer" and method == game.ReplicatedStorage.Events.Ban then
-            return
-        elseif getnamecallmethod() == "FireServer" and method == game.ReplicatedStorage.Events.AdminGUI then
-            return
-        elseif getnamecallmethod() == "FireServer" and method == game.ReplicatedStorage.Events.WS then
-            return
-        elseif getnamecallmethod() == "FireServer" and method == game.ReplicatedStorage.Events.WS2 then
-            return
-        end
-        return bypass(method, ...)
-    end)
+            end,
+        })
 
-    local Library = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-    local Window = Library:CreateWindow({
-       Name = "Slap Royale | TroXer Hub",
-       LoadingTitle = "Troxer Hub is Loading",
-       LoadingSubtitle = "by Cheese",
-       ConfigurationSaving = {
-          Enabled = true,
-          FolderName = nil, -- Create a custom folder for your hub/game
-          FileName = "Big Hub"
-       },
-       Discord = {
-          Enabled = false,
-          Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
-          RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-       },
-       KeySystem = false, -- Set this to true to use our key system
-       KeySettings = {
-          Title = "Key System",
-          Subtitle = "Key System",
-          Note = "",
-          FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-          SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-          GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-          Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
-       }
-    })
-    
-    function Notify(Title, Content, Duration)
-       Library:Notify({
-            Title = Title,
-            Content = Content,
-            Duration = Duration or 2,
-            Image = 4483362458,
-       })
+-- Addons:
+-- SaveManager (Allows you to have a configuration system)
+-- InterfaceManager (Allows you to have a interface managment system)
+
+-- Hand the library over to our managers
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+
+-- Ignore keys that are used by ThemeManager.
+-- (we dont want configs to save themes, do we?)
+SaveManager:IgnoreThemeSettings()
+
+-- You can add indexes of elements the save manager should ignore
+SaveManager:SetIgnoreIndexes({})
+
+-- use case for doing it this way:
+-- a script hub could have themes in a global folder
+-- and game configs in a separate folder per game
+InterfaceManager:SetFolder("FluentScriptHub")
+SaveManager:SetFolder("FluentScriptHub/SlapBattles")
+
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+
+Window:SelectTab(1)
+
     end
-    
-    --// Tabs
-
-    local Combat = Window:CreateTab("Combat", 7733674079) -- Title, Image
-    local Misc = Window:CreateTab("Misc", 4370318685) -- Title, Image
-    local Player = Window:CreateTab("Player", 4335489011) -- Title, Image
-
-    --// Combat Commands
-
-    local SlapAura = Combat:CreateToggle({
-        Name = "Slap Aura",
-        CurrentValue = false,
-        Flag = "Aura", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            if Value == true then
-                _G.SlapAura = true
-
-                while _G.SlapAura == true do
-                    wait()
-                    local Players = game:GetService("Players")
-                    local LocalPlayer = Players.LocalPlayer
-                    local NearbyPlayers = {}
-                    
-                    for _, player in ipairs(Players:GetPlayers()) do
-                        if player ~= LocalPlayer then
-                            local character = player.Character
-                            if character and character:FindFirstChild("Head") then
-                                local distance = (LocalPlayer.Character.Head.Position - character.Head.Position).magnitude
-                                if distance <= 25 then  
-                                    table.insert(NearbyPlayers, player)
-                                end
-                            end
-                        end
-                    end
-                    
-                    if #NearbyPlayers > 0 then
-                        for _, player in ipairs(NearbyPlayers) do
-                            local args = {
-                                [1] = player.Character.Head
-                            }
-                            game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Slap"):FireServer(unpack(args))
-                        end
-                    end
-                end
-            else
-                _G.SlapAura = false
-            end
-        end,
-    })
-
-    --// Misc Commands
-
-    local AntiLava = Misc:CreateToggle({
-        Name = "Anti Lava",
-        CurrentValue = false,
-        Flag = "Lava", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            if Value == true then
-                local block = Instance.new("Part")
-                block.Name = "AntiLavaKYK"
-                block.Size = Vector3.new(100, 1, 110) 
-                block.Transparency = 0.5
-                block.CanCollide = true 
-                block.Anchored = true 
-                block.Position = Vector3.new(-240.93428, -29.1903477, 401.880219, 0.349086821, -0.0864096507, 0.933097899, 1.95710618e-06, 0.995739639, 0.0922098681, -0.937090397, -0.0321874209, 0.347599745) 
-                block.Parent = game.Workspace
-            else
-                local block = game.Workspace:FindFirstChild("AntiLavaKYK")
-                if block then
-                    block:Destroy()
-                end
-            end
-        end,
-    })
-
-    local AntiAcid = Misc:CreateToggle({
-        Name = "Anti Acid",
-        CurrentValue = false,
-        Flag = "Acid", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            if Value == true then
-                local block = Instance.new("Part")
-                block.Name = "AntiAcidKYK"
-                block.Size = Vector3.new(200, 1, 200) 
-                block.Transparency = 0.5 
-                block.CanCollide = true 
-                block.Anchored = true 
-                block.Position = Vector3.new(-64.6827164, 0.228857517, -711.446655, -0.91774404, -0.0017926431, 0.397168338, -6.40035691e-10, 0.999989808, 0.00451351237, -0.397172391, 0.004142249, -0.917734683)
-                block.Parent = game.Workspace
-            else
-                local block = game.Workspace:FindFirstChild("AntiAcidKYK")
-                if block then
-                    block:Destroy()
-                end
-            end
-        end,
-    })
-    
-    --// Player Commands
-
-    local WalkSpeed = Player:CreateSlider({
-        Name = "Speed Hack",
-        Range = {16, 500},
-        Increment = 1,
-        Suffix = "Walk Speed",
-        CurrentValue = 0,
-        Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-        end,
-    })
-
-    local JumpPower = Player:CreateSlider({
-        Name = "Jump Hack",
-        Range = {50, 500},
-        Increment = 1,
-        Suffix = "Jump Power",
-        CurrentValue = 0,
-        Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
-        end,
-    })
-
-    local GravityPower = Player:CreateSlider({
-        Name = "Gravity Hack",
-        Range = {0, 500},
-        Increment = 1,
-        Suffix = "Gravity Power",
-        CurrentValue = 0,
-        Flag = "Slider3", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-        Callback = function(Value)
-            workspace.Gravity = Value
-        end,
-    })
 end
