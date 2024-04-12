@@ -458,7 +458,7 @@ if game.PlaceId == 6403373529 then
             end
         end)
 
-        local TeleportDrow = Tabs.Main:AddDropdown("TeleportSection", {
+        local TeleportDrow = Tabs.Misc:AddDropdown("TeleportSection", {
             Title = "Teleport",
             Values = {"Slapple Island", "Moai Island", "Plate", "Battle Arena", "Cannon Island", "Defualt Arena", "Normal Arena", "Spawn", "Safe Port"},
             Multi = false,
