@@ -462,7 +462,7 @@ if game.PlaceId == 6403373529 then
             Title = "Teleport",
             Values = {"Slapple Island", "Moai Island", "Plate", "Battle Arena", "Cannon Island", "Defualt Arena", "Normal Arena", "Spawn", "Safe Port"},
             Multi = false,
-            Default = 1,
+            Default = 8,
         })
 
         TeleportDrow:OnChanged(function(Value)
